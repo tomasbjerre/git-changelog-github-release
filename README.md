@@ -39,3 +39,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needs write permission in Github menu '/settings/actions'
 ```
+
+Running example [in this repo](.github/workflows/draft-release.yaml) and it references [re-usable workflow](https://github.com/tomasbjerre/.github/blob/master/.github/workflows/draft-release.yaml).
