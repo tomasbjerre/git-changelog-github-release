@@ -21,7 +21,8 @@
     "node": ">=21"
   },
   "scripts": {
-    "build": "npm run prettier:write && npm run package",
+    "build": "rm -rf dist && npm run prettier:write && npm run package && npm run copycli",
+    "copycli": "cp -v node_modules/git-changelog-command-line/build/libs/git-changelog-command-line-*.jar dist && rm dist/*javadoc* dist/*sources* && mv dist/*jar dist/cli.jar",
     "prettier:write": "npx prettier --write .",
     "prettier:check": "npx prettier --check .",
     "package": "npx ncc build src/index.ts -o dist --source-map --license licenses.txt"
@@ -29,7 +30,8 @@
   "license": "Apache 2",
   "dependencies": {
     "@actions/core": "^1.10.1",
-    "@actions/github": "^6.0.0"
+    "@actions/github": "^6.0.0",
+    "git-changelog-command-line": "^2.4.1"
   },
   "devDependencies": {
     "@types/node": "^22.5.5",

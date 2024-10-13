@@ -8,14 +8,19 @@ branding:
   color: white
   icon: archive
 inputs:
+  draft:
+    required: true
+    description: 'If it should be a draft in GitHub or an actual release'
+    default: 'true'
   template:
     description: |
       Rendered and used as description. See https://github.com/tomasbjerre/git-changelog-lib for documentation.
     required: false
     default: |
-      {{#with tags.[0]}}
+      {{#tags}}
+      {{#ifEquals name "Unreleased"}}
       {{#ifContainsBreaking commits}}
-      #💣 Breaking changes
+      # 💣 Breaking changes
 
       {{#commits}}
       {{#ifCommitBreaking .}}
@@ -25,7 +30,7 @@ inputs:
 
       {{/ifContainsBreaking}}
       {{#ifContainsType commits type='feat'}}
-      #🚀 Features
+      # 🚀 Features
 
       {{#commits}}
       {{#ifCommitType . type='feat'}}
@@ -35,7 +40,7 @@ inputs:
 
       {{/ifContainsType}}
       {{#ifContainsType commits type='fix'}}
-      #🐛 Bug Fixes
+      # 🐛 Bug Fixes
 
       {{#commits}}
       {{#ifCommitType . type='fix'}}
@@ -45,7 +50,7 @@ inputs:
 
       {{/ifContainsType}}
       {{#ifContainsType commits type='^($|(?!fix|feat|breaking))'}}
-      #🧰 Other changes
+      # 🧰 Other changes
 
       {{#commits}}
       {{#ifCommitType . type='^$'}}
@@ -61,4 +66,16 @@ inputs:
       {{/commits}}
 
       {{/ifContainsType}}
-      {{/with}}
+      {{/ifEquals}}
+      {{/tags}}
+outputs:
+  id:
+    description: Of created release
+  html_url:
+    description: Of created release
+  upload_url:
+    description: Of created release
+  version:
+    description: Of created release
+  description:
+    description: That was reated
