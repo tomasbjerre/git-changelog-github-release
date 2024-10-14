@@ -13,7 +13,7 @@ that can draft release in GitHub generated from template using
     from that.
   - It will **adjust the draft version** based on conventional commits.
 
-[<img src="git-changelog-github-release-draft.png" width="500" />](git-changelog-github-release-draft.png)
+[<kbd><img src="git-changelog-github-release-draft.png" width="300" /></kbd>](git-changelog-github-release-draft.png)
 
 ## Draft releases
 
