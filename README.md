@@ -38,6 +38,7 @@ jobs:
           distribution: 'zulu'
           java-version: 17
       - uses: tomasbjerre/git-changelog-github-release@main
+        env:
           # Needs write permission in Github menu '/settings/actions'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
@@ -107,6 +108,9 @@ jobs:
           distribution: 'zulu'
           java-version: 17
       - uses: tomasbjerre/git-changelog-github-release@main
+        env:
+          # Needs write permission in Github menu '/settings/actions'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           draft: false
 ```
