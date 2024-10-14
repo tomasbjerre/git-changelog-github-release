@@ -18,6 +18,18 @@ inputs:
     required: true
     default: |
       ^\[maven-release-plugin\].*|^\[Gradle Release Plugin\].*|^Merge.*|.*\[GRADLE SCRIPT\].*
+  minorVersionPattern:
+    description: |
+      Commits matching this pattern will trigger minor version step.
+    required: true
+    default: |
+      ^[Ff]eat.*
+  patchVersionPattern:
+    description: |
+      Commits matching this pattern will trigger patch version step.
+    required: true
+    default: |
+      ^fix.*
   templateDraft:
     description: |
       Used when draft is true.

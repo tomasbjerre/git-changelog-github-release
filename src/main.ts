@@ -43,6 +43,12 @@ export async function run(): Promise<void> {
     const ignoreTagPattern = core.getInput('ignoreTagPattern').trim()
     console.log(`Ignoring commits with pattern: '${ignoreTagPattern}'`)
 
+    const patchVersionPattern = core.getInput('patchVersionPattern').trim()
+    console.log(`Stepping patch with pattern: '${patchVersionPattern}'`)
+
+    const minorVersionPattern = core.getInput('minorVersionPattern').trim()
+    console.log(`Stepping minor with pattern: '${minorVersionPattern}'`)
+
     /**
      * Gather details on release
      */
@@ -55,8 +61,10 @@ export async function run(): Promise<void> {
     console.log(`highestVersionTag: '${highestVersionTag}'`)
 
     let currentVersion = gitChangelogCommandLine([
+      '--minor-version-pattern',
+      minorVersionPattern,
       '--patch-version-pattern',
-      '^fix.*',
+      patchVersionPattern,
       '--print-current-version'
     ])
     console.log(`Rendered currentVersion: '${currentVersion}'`)
