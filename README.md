@@ -38,13 +38,11 @@ jobs:
           distribution: 'zulu'
           java-version: 17
       - uses: tomasbjerre/git-changelog-github-release@main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needs write permission in Github menu '/settings/actions'
+          # Needs write permission in Github menu '/settings/actions'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
-Running example [in this repo](.github/workflows/draft-release.yaml) and it
-references
-[re-usable workflow](https://github.com/tomasbjerre/.github/blob/master/.github/workflows/draft-release.yaml).
+Running example [in this repo](https://github.com/tomasbjerre/.github/blob/master/.github/workflows/draft-release.yaml).
 
 ### Triggering release when publishing draft
 
@@ -112,3 +110,5 @@ jobs:
         with:
           draft: false
 ```
+
+Running example [in this repo](https://github.com/tomasbjerre/.github/blob/master/.github/workflows/publish-release-on-tag-push.yaml).
