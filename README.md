@@ -13,6 +13,9 @@ that can draft release in GitHub generated from template using
     from that.
   - It will **adjust the draft version** based on conventional commits.
 
+[<img src="git-changelog-github-release-draft.png" width="500" />](git-changelog-github-release-draft.png)
+
+
 ## Usage
 
 - Create a file, perhaps `.github/workflows/draft-release.yaml`, with content:
