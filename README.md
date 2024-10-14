@@ -45,9 +45,9 @@ jobs:
 
 Running example [in this repo](.github/workflows/draft-release.yaml) and it references [re-usable workflow](https://github.com/tomasbjerre/.github/blob/master/.github/workflows/draft-release.yaml).
 
-## Triggering release
+## Triggering release when publishing draft
 
-You may want to trigger a workflow that actually packages the project and deploys a release. Perhaps something like this:
+You may want to have GitHub trigger a workflow when drafted release is published. Perhaps to build it and upload a release. Perhaps something like this:
 
 ```yaml
 name: Release
@@ -67,5 +67,5 @@ jobs:
           NEW_VERSION=$(echo "${GITHUB_REF}" | cut -d "/" -f3)
           echo "new_version=${NEW_VERSION}" >> $GITHUB_OUTPUT
       - name: Publish
-        run: echo Whatever command to set version to ${{ steps.new_version.outputs.new_version }} and release it
+        run: echo Whatever command to release version ${{ steps.new_version.outputs.new_version }}
 ```
