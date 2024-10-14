@@ -12,7 +12,7 @@ function gitChangelogCommandLine(userArgs: string[]) {
   console.log(`stderr: ${stderr}`)
   console.log(`status: ${status}`)
   if (!status) {
-    return stdout
+    return stdout.trim()
   }
   throw Error(
     `Error (${status}) from git-changelog-command-line:\n\n${userArgs}\n\n${stderr}\n\n`
@@ -35,31 +35,37 @@ export async function run(): Promise<void> {
      */
     const draft = core.getInput('draft', { required: false }) === 'true'
 
-    const template = core.getInput('template')
+    const template = draft
+      ? core.getInput('templateDraft')
+      : core.getInput('templateLatestRelease')
     console.log(`Using template:\n\n${template}\n\n`)
 
     /**
      * Gather details on release
      */
     const highestVersion = gitChangelogCommandLine(['--print-highest-version'])
-    console.log(`highestVersion: ${highestVersion}`)
+    console.log(`highestVersion: '${highestVersion}'`)
 
     const highestVersionTag = gitChangelogCommandLine([
       '--print-highest-version-tag'
     ])
-    console.log(`highestVersionTag: ${highestVersionTag}`)
+    console.log(`highestVersionTag: '${highestVersionTag}'`)
 
     let currentVersion = gitChangelogCommandLine([
       '--patch-version-pattern',
       '^fix.*',
       '--print-current-version'
     ])
-    console.log(`Rendered currentVersion:\n\n${currentVersion}\n\n`)
+    console.log(`Rendered currentVersion: '${currentVersion}'`)
 
     if (highestVersionTag) {
       if (currentVersion === highestVersion) {
-        console.log(`No changes made that can be released`)
-        return
+        if (draft) {
+          console.log(
+            `No changes made that can be released, skipping since draft is ${draft}`
+          )
+          return
+        }
       } else {
         console.log(
           `Changes detected and a new ${currentVersion} release can be made`
@@ -72,12 +78,18 @@ export async function run(): Promise<void> {
       currentVersion = '0.0.1'
     }
 
-    const description = gitChangelogCommandLine([
-      '-std',
-      '--template-content',
-      template
-    ])
-    console.log(`Rendered description:\n\n${description}\n\n`)
+    let description = draft
+      ? gitChangelogCommandLine(['-std', '--template-content', template])
+      : gitChangelogCommandLine([
+          '-std',
+          '--to-revision',
+          currentVersion,
+          '--template-content',
+          template
+        ])
+    console.log(
+      `Rendered '${currentVersion}' description:\n\n${description}\n\n`
+    )
 
     /**
      * Remove any previous draft
@@ -109,7 +121,7 @@ export async function run(): Promise<void> {
       owner,
       repo,
       tag_name: currentVersion,
-      name: currentVersion,
+      name: `v${currentVersion}`,
       body: description,
       draft,
       prerelease: false,

@@ -15,8 +15,7 @@ that can draft release in GitHub generated from template using
 
 [<img src="git-changelog-github-release-draft.png" width="500" />](git-changelog-github-release-draft.png)
 
-
-## Usage
+## Draft releases
 
 - Create a file, perhaps `.github/workflows/draft-release.yaml`, with content:
 
@@ -43,11 +42,15 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needs write permission in Github menu '/settings/actions'
 ```
 
-Running example [in this repo](.github/workflows/draft-release.yaml) and it references [re-usable workflow](https://github.com/tomasbjerre/.github/blob/master/.github/workflows/draft-release.yaml).
+Running example [in this repo](.github/workflows/draft-release.yaml) and it
+references
+[re-usable workflow](https://github.com/tomasbjerre/.github/blob/master/.github/workflows/draft-release.yaml).
 
-## Triggering release when publishing draft
+### Triggering release when publishing draft
 
-You may want to have GitHub trigger a workflow when drafted release is published. Perhaps to build it and upload a release. Perhaps something like this:
+You may want to have GitHub trigger a workflow when drafted release is
+published. Perhaps to build it and upload a release. Perhaps something like
+this:
 
 ```yaml
 name: Release
@@ -67,5 +70,45 @@ jobs:
           NEW_VERSION=$(echo "${GITHUB_REF}" | cut -d "/" -f3)
           echo "new_version=${NEW_VERSION}" >> $GITHUB_OUTPUT
       - name: Publish
-        run: echo Whatever command to release version ${{ steps.new_version.outputs.new_version }}
+        run:
+          echo Whatever command to release version ${{
+          steps.new_version.outputs.new_version }}
+```
+
+## Publish releases when tags pushed
+
+If you already have some other way of releasing, you may want to just publish
+those releases.
+
+This will render the release content with the difference between the last 2
+tags.
+
+```yaml
+name: Publish release on tag push
+
+on:
+  workflow_dispatch:
+  workflow_call:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build:
+    runs-on: 'ubuntu-latest'
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-tags: 'true'
+          fetch-depth: '0'
+      - name: Setup java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: 17
+      - uses: tomasbjerre/git-changelog-github-release@main
+        with:
+          draft: false
 ```

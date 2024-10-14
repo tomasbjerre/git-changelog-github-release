@@ -12,9 +12,11 @@ inputs:
     required: true
     description: 'If it should be a draft in GitHub or an actual release'
     default: 'true'
-  template:
+  templateDraft:
     description: |
-      Rendered and used as description. See https://github.com/tomasbjerre/git-changelog-lib for documentation.
+      Used when draft is true.
+      Unreleased changes rendered and used as description.
+      See https://github.com/tomasbjerre/git-changelog-lib for documentation.
     required: false
     default: |
       {{#tags}}
@@ -68,6 +70,62 @@ inputs:
       {{/ifContainsType}}
       {{/ifEquals}}
       {{/tags}}
+  templateLatestRelease:
+    description: |
+      Used when draft is false
+      Difference between 2 latest tags rendered and used as description.
+      See https://github.com/tomasbjerre/git-changelog-lib for documentation.
+    required: false
+    default: |
+      {{#with tags.[0]}}
+      {{#ifContainsBreaking commits}}
+      # 💣 Breaking changes
+
+      {{#commits}}
+      {{#ifCommitBreaking .}}
+      - {{#eachCommitScope .}} **{{.}}** {{/eachCommitScope}} {{{commitDescription .}}} ([{{subString hash 0 5}}](https://github.com/{{ownerName}}/{{repoName}}/commit/{{hash}}) {{authorName}}) {{#eachCommitRefs .}}{{#ifMatches . "^#[0-9]+"}} [{{.}}](https://github.com/{{ownerName}}/{{repoName}}/issues/{{subString . 1}}) {{/ifMatches}}{{/eachCommitRefs}} {{#eachCommitFixes .}}{{#ifMatches . "^#[0-9]+"}} [{{.}}](https://github.com/{{ownerName}}/{{repoName}}/issues/{{subString . 1}}) {{/ifMatches}}{{/eachCommitFixes}}
+      {{/ifCommitBreaking}}
+      {{/commits}}
+
+      {{/ifContainsBreaking}}
+      {{#ifContainsType commits type='feat'}}
+      # 🚀 Features
+
+      {{#commits}}
+      {{#ifCommitType . type='feat'}}
+      - {{#eachCommitScope .}} **{{.}}** {{/eachCommitScope}} {{{commitDescription .}}} ([{{subString hash 0 5}}](https://github.com/{{ownerName}}/{{repoName}}/commit/{{hash}}) {{authorName}}) {{#eachCommitRefs .}}{{#ifMatches . "^#[0-9]+"}} [{{.}}](https://github.com/{{ownerName}}/{{repoName}}/issues/{{subString . 1}}) {{/ifMatches}}{{/eachCommitRefs}} {{#eachCommitFixes .}}{{#ifMatches . "^#[0-9]+"}} [{{.}}](https://github.com/{{ownerName}}/{{repoName}}/issues/{{subString . 1}}) {{/ifMatches}}{{/eachCommitFixes}}
+      {{/ifCommitType}}
+      {{/commits}}
+
+      {{/ifContainsType}}
+      {{#ifContainsType commits type='fix'}}
+      # 🐛 Bug Fixes
+
+      {{#commits}}
+      {{#ifCommitType . type='fix'}}
+      - {{#eachCommitScope .}} **{{.}}** {{/eachCommitScope}} {{{commitDescription .}}} ([{{subString hash 0 5}}](https://github.com/{{ownerName}}/{{repoName}}/commit/{{hash}}) {{authorName}}) {{#eachCommitRefs .}}{{#ifMatches . "^#[0-9]+"}} [{{.}}](https://github.com/{{ownerName}}/{{repoName}}/issues/{{subString . 1}}) {{/ifMatches}}{{/eachCommitRefs}} {{#eachCommitFixes .}}{{#ifMatches . "^#[0-9]+"}} [{{.}}](https://github.com/{{ownerName}}/{{repoName}}/issues/{{subString . 1}}) {{/ifMatches}}{{/eachCommitFixes}}
+      {{/ifCommitType}}
+      {{/commits}}
+
+      {{/ifContainsType}}
+      {{#ifContainsType commits type='^($|(?!fix|feat|breaking))'}}
+      # 🧰 Other changes
+
+      {{#commits}}
+      {{#ifCommitType . type='^$'}}
+      **{{{messageTitle}}}**
+
+      {{#messageBodyItems}}
+      * {{.}} 
+      {{/messageBodyItems}}
+
+      [{{subString hash 0 5}}](https://github.com/{{ownerName}}/{{repoName}}/commit/{{hash}}) {{authorName}} *{{commitTime}}*
+
+      {{/ifCommitType}}
+      {{/commits}}
+
+      {{/ifContainsType}}
+      {{/with}}
 outputs:
   id:
     description: Of created release
