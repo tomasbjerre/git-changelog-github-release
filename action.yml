@@ -12,6 +12,12 @@ inputs:
     required: true
     description: 'If it should be a draft in GitHub or an actual release'
     default: 'true'
+  ignoreTagPattern:
+    description: |
+      Regular expression. Any commit matching it will be ignored.
+    required: true
+    default: |
+      ^\[maven-release-plugin\].*|^\[Gradle Release Plugin\].*|^Merge.*|.*\[GRADLE SCRIPT\].*
   templateDraft:
     description: |
       Used when draft is true.

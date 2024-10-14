@@ -40,6 +40,9 @@ export async function run(): Promise<void> {
       : core.getInput('templateLatestRelease')
     console.log(`Using template:\n\n${template}\n\n`)
 
+    const ignoreTagPattern = core.getInput('ignoreTagPattern').trim()
+    console.log(`Ignoring commits with pattern: '${ignoreTagPattern}'`)
+
     /**
      * Gather details on release
      */
@@ -79,9 +82,17 @@ export async function run(): Promise<void> {
     }
 
     let description = draft
-      ? gitChangelogCommandLine(['-std', '--template-content', template])
+      ? gitChangelogCommandLine([
+          '-std',
+          '--ignore-tag-pattern',
+          ignoreTagPattern,
+          '--template-content',
+          template
+        ])
       : gitChangelogCommandLine([
           '-std',
+          '--ignore-tag-pattern',
+          ignoreTagPattern,
           '--to-revision',
           currentVersion,
           '--template-content',

@@ -43,7 +43,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
-Running example [in this repo](https://github.com/tomasbjerre/.github/blob/master/.github/workflows/draft-release.yaml).
+Running example
+[in this repo](https://github.com/tomasbjerre/.github/blob/master/.github/workflows/draft-release.yaml).
 
 ### Triggering release when publishing draft
 
@@ -115,4 +116,5 @@ jobs:
           draft: false
 ```
 
-Running example [in this repo](https://github.com/tomasbjerre/.github/blob/master/.github/workflows/publish-release-on-tag-push.yaml).
+Running example
+[in this repo](https://github.com/tomasbjerre/.github/blob/master/.github/workflows/publish-release-on-tag-push.yaml).
