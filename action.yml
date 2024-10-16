@@ -14,6 +14,11 @@ inputs:
     default: 'true'
   ignoreTagPattern:
     description: |
+      Regular expression. Any tag matching it will be ignored.
+    required: false
+    default: ''
+  ignorePattern:
+    description: |
       Regular expression. Any commit matching it will be ignored.
     required: true
     default: |

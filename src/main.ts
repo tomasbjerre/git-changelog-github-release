@@ -41,7 +41,10 @@ export async function run(): Promise<void> {
     console.log(`Using template:\n\n${template}\n\n`)
 
     const ignoreTagPattern = core.getInput('ignoreTagPattern').trim()
-    console.log(`Ignoring commits with pattern: '${ignoreTagPattern}'`)
+    console.log(`Ignoring tags with pattern: '${ignoreTagPattern}'`)
+
+    const ignorePattern = core.getInput('ignorePattern').trim()
+    console.log(`Ignoring commits with pattern: '${ignorePattern}'`)
 
     const patchVersionPattern = core.getInput('patchVersionPattern').trim()
     console.log(`Stepping patch with pattern: '${patchVersionPattern}'`)
@@ -89,23 +92,17 @@ export async function run(): Promise<void> {
       currentVersion = '0.0.1'
     }
 
-    let description = draft
-      ? gitChangelogCommandLine([
-          '-std',
-          '--ignore-tag-pattern',
-          ignoreTagPattern,
-          '--template-content',
-          template
-        ])
-      : gitChangelogCommandLine([
-          '-std',
-          '--ignore-tag-pattern',
-          ignoreTagPattern,
-          '--to-revision',
-          currentVersion,
-          '--template-content',
-          template
-        ])
+    let args = ['-std', '--template-content', template]
+    if (!draft) {
+      args = [...args, '--to-revision', currentVersion]
+    }
+    if (ignoreTagPattern !== '') {
+      args = [...args, '--ignore-tag-pattern', ignoreTagPattern]
+    }
+    if (ignorePattern !== '') {
+      args = [...args, '--ignore-pattern', ignorePattern]
+    }
+    let description = gitChangelogCommandLine(args)
     console.log(
       `Rendered '${currentVersion}' description:\n\n${description}\n\n`
     )
