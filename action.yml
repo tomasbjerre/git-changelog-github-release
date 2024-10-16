@@ -34,7 +34,7 @@ inputs:
       Commits matching this pattern will trigger patch version step.
     required: true
     default: |
-      ^fix.*
+      ^(fix|chore\(deps\)).*
   templateDraft:
     description: |
       Used when draft is true.
@@ -74,7 +74,19 @@ inputs:
       {{/commits}}
 
       {{/ifContainsType}}
-      {{#ifContainsType commits type='^($|(?!fix|feat|breaking))'}}
+      {{#ifContainsTypeAndScope commits type="chore" scope="deps"}}
+      # 📦 Dependency updates
+
+      {{#commits}}
+      {{#ifCommitType . type="chore"}}
+      {{#ifCommitScope . scope="deps"}}
+      - {{{commitDescription .}}} ([{{subString hash 0 5}}](https://github.com/{{ownerName}}/{{repoName}}/commit/{{hash}}) {{authorName}}) {{#eachCommitRefs .}}{{#ifMatches . "^#[0-9]+"}} [{{.}}](https://github.com/{{ownerName}}/{{repoName}}/issues/{{subString . 1}}) {{/ifMatches}}{{/eachCommitRefs}} {{#eachCommitFixes .}}{{#ifMatches . "^#[0-9]+"}} [{{.}}](https://github.com/{{ownerName}}/{{repoName}}/issues/{{subString . 1}}) {{/ifMatches}}{{/eachCommitFixes}}
+      {{/ifCommitScope}}
+      {{/ifCommitType}}
+      {{/commits}}
+
+      {{/ifContainsTypeAndScope}}
+      {{#ifContainsType commits type='^($^|(?!fix|feat|breaking|chore).*)'}}
       # 🧰 Other changes
 
       {{#commits}}
@@ -131,6 +143,18 @@ inputs:
       {{/commits}}
 
       {{/ifContainsType}}
+      {{#ifContainsTypeAndScope commits type="chore" scope="deps"}}
+      # 📦 Dependency updates
+
+      {{#commits}}
+      {{#ifCommitType . type="chore"}}
+      {{#ifCommitScope . scope="deps"}}
+      - {{{commitDescription .}}} ([{{subString hash 0 5}}](https://github.com/{{ownerName}}/{{repoName}}/commit/{{hash}}) {{authorName}}) {{#eachCommitRefs .}}{{#ifMatches . "^#[0-9]+"}} [{{.}}](https://github.com/{{ownerName}}/{{repoName}}/issues/{{subString . 1}}) {{/ifMatches}}{{/eachCommitRefs}} {{#eachCommitFixes .}}{{#ifMatches . "^#[0-9]+"}} [{{.}}](https://github.com/{{ownerName}}/{{repoName}}/issues/{{subString . 1}}) {{/ifMatches}}{{/eachCommitFixes}}
+      {{/ifCommitScope}}
+      {{/ifCommitType}}
+      {{/commits}}
+
+      {{/ifContainsTypeAndScope}}
       {{#ifContainsType commits type='^($|(?!fix|feat|breaking))'}}
       # 🧰 Other changes
 
