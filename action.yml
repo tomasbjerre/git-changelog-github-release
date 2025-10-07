@@ -2,7 +2,7 @@ name: 'Git Changelog GitHub Release'
 description: 'Drafts release with template using Git Changelog Lib.'
 author: 'Tomas Bjerre'
 runs:
-  using: 'node22'
+  using: 'node24'
   main: 'dist/index.js'
 branding:
   color: white
