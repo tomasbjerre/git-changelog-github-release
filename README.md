@@ -33,7 +33,7 @@ jobs:
           fetch-tags: 'true'
           fetch-depth: '0'
       - name: Setup java
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: 17
@@ -104,7 +104,7 @@ jobs:
           fetch-tags: 'true'
           fetch-depth: '0'
       - name: Setup java
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: 17

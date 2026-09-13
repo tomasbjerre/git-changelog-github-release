@@ -114,19 +114,21 @@ export async function run(): Promise<void> {
       owner,
       repo
     })
-    latestRelease.data.forEach(release => {
-      if (!release.draft) {
-        return
+    latestRelease.data.forEach(
+      (release: (typeof latestRelease.data)[number]) => {
+        if (!release.draft) {
+          return
+        }
+        console.log(
+          `Removing previous draft (${release.id}):\n\n${release.body_text}\n\n`
+        )
+        getOctokit(token).rest.repos.deleteRelease({
+          owner,
+          repo,
+          release_id: release.id
+        })
       }
-      console.log(
-        `Removing previous draft (${release.id}):\n\n${release.body_text}\n\n`
-      )
-      getOctokit(token).rest.repos.deleteRelease({
-        owner,
-        repo,
-        release_id: release.id
-      })
-    })
+    )
 
     /**
      * Create the release
