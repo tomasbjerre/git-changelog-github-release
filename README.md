@@ -1,5 +1,7 @@
 # Git Changelog Github Release Action
 
+[![Marketplace](https://img.shields.io/badge/marketplace-git--changelog--github--release-blue?logo=github)](https://github.com/marketplace/actions/git-changelog-github-release)
+
 This is a
 [GitHub action](https://docs.github.com/en/actions/creating-actions/about-custom-actions)
 that can draft release in GitHub generated from template using
