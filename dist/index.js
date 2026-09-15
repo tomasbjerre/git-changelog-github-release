@@ -26827,4 +26827,3 @@ content-type/dist/index.js:
   (* v8 ignore if -- @preserve *)
 */
 //# sourceMappingURL=index.js.map
-// stale marker

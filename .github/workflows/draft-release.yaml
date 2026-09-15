@@ -8,3 +8,4 @@ permissions:
 jobs:
   call-workflow:
     uses: tomasbjerre/.github/.github/workflows/bundle-npm-action-draft-release.yaml@master
+    secrets: inherit
