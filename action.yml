@@ -133,8 +133,10 @@ inputs:
 
       {{#commits}}
       {{#ifCommitType . type='chore'}}
-      {{^ifCommitScope . scope="deps"}}
-      {{^ifCommitScope . scope="ci"}}
+      {{#ifCommitScope . scope="deps"}}
+      {{else}}
+      {{#ifCommitScope . scope="ci"}}
+      {{else}}
       - {{{commitDescription .}}} ([{{subString hash 0 5}}](https://github.com/{{ownerName}}/{{repoName}}/commit/{{hash}}) {{authorName}}) {{#eachCommitRefs .}}{{#ifMatches . "^#[0-9]+"}} [{{.}}](https://github.com/{{ownerName}}/{{repoName}}/issues/{{subString . 1}}) {{/ifMatches}}{{/eachCommitRefs}} {{#eachCommitFixes .}}{{#ifMatches . "^#[0-9]+"}} [{{.}}](https://github.com/{{ownerName}}/{{repoName}}/issues/{{subString . 1}}) {{/ifMatches}}{{/eachCommitFixes}}
       {{/ifCommitScope}}
       {{/ifCommitScope}}
@@ -258,8 +260,10 @@ inputs:
 
       {{#commits}}
       {{#ifCommitType . type='chore'}}
-      {{^ifCommitScope . scope="deps"}}
-      {{^ifCommitScope . scope="ci"}}
+      {{#ifCommitScope . scope="deps"}}
+      {{else}}
+      {{#ifCommitScope . scope="ci"}}
+      {{else}}
       - {{{commitDescription .}}} ([{{subString hash 0 5}}](https://github.com/{{ownerName}}/{{repoName}}/commit/{{hash}}) {{authorName}}) {{#eachCommitRefs .}}{{#ifMatches . "^#[0-9]+"}} [{{.}}](https://github.com/{{ownerName}}/{{repoName}}/issues/{{subString . 1}}) {{/ifMatches}}{{/eachCommitRefs}} {{#eachCommitFixes .}}{{#ifMatches . "^#[0-9]+"}} [{{.}}](https://github.com/{{ownerName}}/{{repoName}}/issues/{{subString . 1}}) {{/ifMatches}}{{/eachCommitFixes}}
       {{/ifCommitScope}}
       {{/ifCommitScope}}
