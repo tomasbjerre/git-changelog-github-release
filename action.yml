@@ -147,6 +147,9 @@ inputs:
       {{#ifContainsType commits type='^($|(?!fix|feat|breaking|chore|docs?|refactor|test).*)'}}
       # 🧰 Other changes
 
+      <details>
+        <summary>Show</summary>
+
       {{#commits}}
       {{#ifCommitType . type='^($|(?!fix|feat|breaking|chore|docs?|refactor|test).*)'}}
       **{{{messageTitle}}}**
@@ -159,6 +162,8 @@ inputs:
 
       {{/ifCommitType}}
       {{/commits}}
+
+      </details>
 
       {{/ifContainsType}}
       {{/ifEquals}}
@@ -274,6 +279,9 @@ inputs:
       {{#ifContainsType commits type='^($|(?!fix|feat|breaking|chore|docs?|refactor|test).*)'}}
       # 🧰 Other changes
 
+      <details>
+        <summary>Show</summary>
+
       {{#commits}}
       {{#ifCommitType . type='^($|(?!fix|feat|breaking|chore|docs?|refactor|test).*)'}}
       **{{{messageTitle}}}**
@@ -286,6 +294,8 @@ inputs:
 
       {{/ifCommitType}}
       {{/commits}}
+
+      </details>
 
       {{/ifContainsType}}
       {{/with}}
