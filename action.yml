@@ -22,7 +22,7 @@ inputs:
       Regular expression. Any commit matching it will be ignored.
     required: true
     default: |
-      ^\[maven-release-plugin\].*|^\[Gradle Release Plugin\].*|^Merge.*|.*\[GRADLE SCRIPT\].*
+      ^\[maven-release-plugin\].*|^\[Gradle Release Plugin\].*|^Merge.*|.*\[GRADLE SCRIPT\].*|^chore\(changelog\).*
   minorVersionPattern:
     description: |
       Commits matching this pattern will trigger minor version step.
