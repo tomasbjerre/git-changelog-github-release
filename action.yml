@@ -128,7 +128,7 @@ inputs:
       {{/commits}}
 
       {{/ifContainsType}}
-      {{#ifContainsType commits type='chore'}}
+      {{#ifContainsTypeAndScopeNotIn commits type='chore' scopes="deps,ci"}}
       # 🧹 Chores
 
       {{#commits}}
@@ -143,7 +143,7 @@ inputs:
       {{/ifCommitType}}
       {{/commits}}
 
-      {{/ifContainsType}}
+      {{/ifContainsTypeAndScopeNotIn}}
       {{#ifContainsType commits type='^($|(?!fix|feat|breaking|chore|docs?|refactor|test).*)'}}
       # 🧰 Other changes
 
@@ -260,7 +260,7 @@ inputs:
       {{/commits}}
 
       {{/ifContainsType}}
-      {{#ifContainsType commits type='chore'}}
+      {{#ifContainsTypeAndScopeNotIn commits type='chore' scopes="deps,ci"}}
       # 🧹 Chores
 
       {{#commits}}
@@ -275,7 +275,7 @@ inputs:
       {{/ifCommitType}}
       {{/commits}}
 
-      {{/ifContainsType}}
+      {{/ifContainsTypeAndScopeNotIn}}
       {{#ifContainsType commits type='^($|(?!fix|feat|breaking|chore|docs?|refactor|test).*)'}}
       # 🧰 Other changes
 
