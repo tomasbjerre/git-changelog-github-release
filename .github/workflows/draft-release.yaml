@@ -1,6 +1,9 @@
 name: Draft release
 
-on: [workflow_dispatch, push]
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
 
 permissions:
   contents: write
