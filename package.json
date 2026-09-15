@@ -21,11 +21,13 @@
     "node": ">=21"
   },
   "scripts": {
-    "build": "rm -rf dist && npm run prettier:write && npm run package && npm run copycli",
+    "build": "rm -rf dist && npm run prettier:write && npm run typecheck && npm run package && npm run licenses && npm run copycli",
     "copycli": "cp -v node_modules/git-changelog-command-line/build/libs/git-changelog-command-line-*.jar dist && rm dist/*javadoc* dist/*sources* && mv dist/*jar dist/cli.jar",
+    "licenses": "npx license-checker-rseidelsohn --production --plainVertical --out dist/licenses.txt",
+    "package": "npx esbuild src/index.ts --bundle --platform=node --target=node24 --format=cjs --outfile=dist/index.js --sourcemap",
     "prettier:write": "npx prettier --write .",
     "prettier:check": "npx prettier --check .",
-    "package": "npx ncc build src/index.ts -o dist --source-map --license licenses.txt"
+    "typecheck": "npx tsc --noEmit"
   },
   "license": "Apache 2",
   "dependencies": {
@@ -35,9 +37,10 @@
   },
   "devDependencies": {
     "@types/node": "^26.5.1",
-    "@vercel/ncc": "^0.45.0",
+    "esbuild": "^0.28.2",
+    "license-checker-rseidelsohn": "^5.0.1",
     "prettier": "^3.9.6",
     "prettier-eslint": "^17.1.2",
-    "typescript": "^5.9.3"
+    "typescript": "^7.0.0"
   }
 }
