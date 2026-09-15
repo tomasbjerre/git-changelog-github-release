@@ -2,6 +2,9 @@ name: CI
 
 on: [workflow_dispatch, push, pull_request]
 
+permissions:
+  contents: write
+
 jobs:
   call-workflow:
     uses: tomasbjerre/.github/.github/workflows/bundle-npm-action-ci.yaml@master
